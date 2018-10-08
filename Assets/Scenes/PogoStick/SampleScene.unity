@@ -1027,7 +1027,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4328027491450672, guid: 087f052210128b9438bb57787280e93b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: 0.46
       objectReference: {fileID: 0}
     - target: {fileID: 4328027491450672, guid: 087f052210128b9438bb57787280e93b, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1081,6 +1081,38 @@ Prefab:
         type: 2}
       propertyPath: m_Constraints
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 54340242162104444, guid: 087f052210128b9438bb57787280e93b,
+        type: 2}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4121688643355718, guid: 087f052210128b9438bb57787280e93b, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4247588497342982, guid: 087f052210128b9438bb57787280e93b, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4623236233109074, guid: 087f052210128b9438bb57787280e93b, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114494516597307374, guid: 087f052210128b9438bb57787280e93b,
+        type: 2}
+      propertyPath: expandingSpringAnim
+      value: 
+      objectReference: {fileID: 7400000, guid: 962615cdf3ca5c54db802722f8404172, type: 2}
+    - target: {fileID: 114494516597307374, guid: 087f052210128b9438bb57787280e93b,
+        type: 2}
+      propertyPath: shrinkingSpringAnim
+      value: 
+      objectReference: {fileID: 7400000, guid: 7bcbe9becf0fc584fb5c6f1152f68a09, type: 2}
+    - target: {fileID: 54340242162104444, guid: 087f052210128b9438bb57787280e93b,
+        type: 2}
+      propertyPath: m_AngularDrag
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 087f052210128b9438bb57787280e93b, type: 2}

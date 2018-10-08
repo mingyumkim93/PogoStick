@@ -4,60 +4,61 @@ using UnityEngine;
 
 public class PogoStick : MonoBehaviour {
 
-    private Rigidbody myRigidbody;
-    public float delta = 1f;
-    public float powerMultiplier = 15f;
     Animator animator;
-	
-	void Start ()
+    Rigidbody myRigidbody;
+    float speed = 90f;
+    float powerMuliplier = 100f;
+    [SerializeField] AnimationClip shrinkingSpringAnim;
+    [SerializeField] AnimationClip expandingSpringAnim;
+
+    void Start()
     {
-        myRigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-	}
-	
-	void Update ()
-    {
-        ReactToInput();
+        myRigidbody = GetComponent<Rigidbody>();
     }
 
-    private void ReactToInput()
+    void Update()
     {
-        if (Input.GetMouseButton(0))
-            myRigidbody.AddForce(Vector3.left);
-        if (Input.GetKey(KeyCode.W))
-            transform.Rotate(new Vector3(delta, 0, 0) * Time.deltaTime);
-        if (Input.GetKey(KeyCode.S))
-            transform.Rotate(new Vector3(-delta, 0, 0));
-        if (Input.GetKey(KeyCode.A))
-            transform.Rotate(new Vector3(0, 0, delta));
-        if (Input.GetKey(KeyCode.D))
-            transform.Rotate(new Vector3(0, 0, -delta));
+        RespondToSteeringInput();
+
+    }
+
+    private void RespondToSteeringInput()
+    {
+        float h = Input.GetAxis("Horizontal");
+        transform.Rotate(Vector3.back, h * speed * Time.deltaTime);
+        float v = Input.GetAxis("Vertical");
+        transform.Rotate(Vector3.right, v * speed * Time.deltaTime);
+
         if (Input.GetKey(KeyCode.LeftArrow))
-            transform.Rotate(new Vector3(0, -delta, 0), Space.World);
+            transform.Rotate(-Vector3.up, speed * Time.deltaTime);
         if (Input.GetKey(KeyCode.RightArrow))
-            transform.Rotate(new Vector3(0, delta, 0), Space.World);
-        if (Input.GetKey(KeyCode.Space))
-            powerMultiplier++;
+            transform.Rotate(Vector3.up, speed * Time.deltaTime);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        StartCoroutine(GettingExtraPower());
-    }
-
-    IEnumerator GettingExtraPower()
-    {
+        powerMuliplier = 100f; 
         animator.Play("ShrinkSpring");
-        powerMultiplier = 15f;
-        yield return new WaitForSeconds(.5f);
-        ExpandSpringAndAddForce();
+        StartCoroutine(GetPowerAndJump());
     }
 
-    void ExpandSpringAndAddForce()
+    private void OnCollisionStay(Collision collision)
     {
-        powerMultiplier = powerMultiplier / 3;
-        print("power multiplier = " + powerMultiplier);
-        myRigidbody.AddForce(powerMultiplier * transform.up, ForceMode.Impulse);
-        animator.Play("ExpandSpring");
+        if (Input.GetKey(KeyCode.Space))
+            powerMuliplier += Time.deltaTime * 300;
     }
+
+    IEnumerator GetPowerAndJump()
+    {
+        yield return new WaitForSeconds(shrinkingSpringAnim.length + expandingSpringAnim.length);
+        GetForceToJump();
+    }
+
+    void GetForceToJump()
+    {
+        myRigidbody.AddForce(transform.up * powerMuliplier);
+        print("powermuliplier = " + powerMuliplier);
+    }
+
 }
