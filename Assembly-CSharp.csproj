@@ -76,7 +76,10 @@
     <Compile Include="Assets\PQAssets\Query-Chan\Scripts\QueryEmotionalController.cs" />
     <Compile Include="Assets\PQAssets\Query-Chan\Scripts\QueryMechanimController.cs" />
     <Compile Include="Assets\PQAssets\Query-Chan\Scripts\QuerySoundController.cs" />
+    <Compile Include="Assets\Scenes\PogoStick\HeightDisplay.cs" />
     <Compile Include="Assets\Scenes\PogoStick\PogoStick.cs" />
+    <Compile Include="Assets\SpaceSkies Free\Demo\Scripts\LookCamera.cs" />
+    <Compile Include="Assets\SpaceSkies Free\Demo\Scripts\SkyboxChanger.cs" />
     <None Include="Assets\PQAssets\Query-Chan\Shaders\PQ_Skin.shader" />
     <None Include="Assets\PQAssets\Query-Chan\Shaders\PQ_TransBlue.shader" />
     <Reference Include="UnityEditor.StandardEvents">

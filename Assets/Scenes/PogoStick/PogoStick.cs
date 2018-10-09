@@ -6,8 +6,9 @@ public class PogoStick : MonoBehaviour {
 
     Animator animator;
     Rigidbody myRigidbody;
-    float speed = 90f;
-    float powerMuliplier = 100f;
+    float steeringSpeed = 100f;
+    float powerMultiplierIncresingSpeed = 300f;
+    float powerMultiplier = 100f;
     [SerializeField] AnimationClip shrinkingSpringAnim;
     [SerializeField] AnimationClip expandingSpringAnim;
 
@@ -26,19 +27,19 @@ public class PogoStick : MonoBehaviour {
     private void RespondToSteeringInput()
     {
         float h = Input.GetAxis("Horizontal");
-        transform.Rotate(Vector3.back, h * speed * Time.deltaTime);
+        transform.Rotate(Vector3.back, h * steeringSpeed * Time.deltaTime);
         float v = Input.GetAxis("Vertical");
-        transform.Rotate(Vector3.right, v * speed * Time.deltaTime);
+        transform.Rotate(Vector3.right, v * steeringSpeed * Time.deltaTime);
 
         if (Input.GetKey(KeyCode.LeftArrow))
-            transform.Rotate(-Vector3.up, speed * Time.deltaTime);
+            transform.Rotate(-Vector3.up, steeringSpeed * Time.deltaTime);
         if (Input.GetKey(KeyCode.RightArrow))
-            transform.Rotate(Vector3.up, speed * Time.deltaTime);
+            transform.Rotate(Vector3.up, steeringSpeed * Time.deltaTime);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        powerMuliplier = 100f; 
+        powerMultiplier = 100f; 
         animator.Play("ShrinkSpring");
         StartCoroutine(GetPowerAndJump());
     }
@@ -46,7 +47,7 @@ public class PogoStick : MonoBehaviour {
     private void OnCollisionStay(Collision collision)
     {
         if (Input.GetKey(KeyCode.Space))
-            powerMuliplier += Time.deltaTime * 300;
+            powerMultiplier += Time.deltaTime * powerMultiplierIncresingSpeed;
     }
 
     IEnumerator GetPowerAndJump()
@@ -57,8 +58,8 @@ public class PogoStick : MonoBehaviour {
 
     void GetForceToJump()
     {
-        myRigidbody.AddForce(transform.up * powerMuliplier);
-        print("powermuliplier = " + powerMuliplier);
+        myRigidbody.AddForce(transform.up * powerMultiplier);
+        print("powermuliplier = " + powerMultiplier);
     }
 
 }
