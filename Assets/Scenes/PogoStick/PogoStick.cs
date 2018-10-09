@@ -1,27 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PogoStick : MonoBehaviour {
 
-    Animator animator;
-    Rigidbody myRigidbody;
+    Rigidbody pogoStickBody;
+    [SerializeField]
     float steeringSpeed = 100f;
-    float powerMultiplierIncresingSpeed = 300f;
-    float powerMultiplier = 100f;
-    [SerializeField] AnimationClip shrinkingSpringAnim;
-    [SerializeField] AnimationClip expandingSpringAnim;
+    [SerializeField]
+    float powerMultiplier = 2f;
+    [SerializeField]
+    private float _maxDepth = 0.25f;
+    [SerializeField]
+    private float _springStiffness = 3f;
+    private float _collisionTime;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
-        myRigidbody = GetComponent<Rigidbody>();
+        pogoStickBody = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
         RespondToSteeringInput();
+        if (pogoStickBody.position.y <= 0)
+            UpdateJumpSequence();
+    }
 
+    private void UpdateJumpSequence() {
+        var relativeForce = -pogoStickBody.position.y / _maxDepth;
+        if (relativeForce >= 1f)
+            pogoStickBody.velocity = new Vector3(pogoStickBody.velocity.x, 0, pogoStickBody.velocity.z);
+        Vector3 force = pogoStickBody.mass * Physics.gravity * _springStiffness * powerMultiplier * relativeForce;
+        force = Vector3.Dot(force, pogoStickBody.transform.up) * pogoStickBody.transform.up.normalized;
+        pogoStickBody.AddForce(-force);
     }
 
     private void RespondToSteeringInput()
@@ -36,30 +46,4 @@ public class PogoStick : MonoBehaviour {
         if (Input.GetKey(KeyCode.RightArrow))
             transform.Rotate(Vector3.up, steeringSpeed * Time.deltaTime);
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        powerMultiplier = 100f; 
-        animator.Play("ShrinkSpring");
-        StartCoroutine(GetPowerAndJump());
-    }
-
-    private void OnCollisionStay(Collision collision)
-    {
-        if (Input.GetKey(KeyCode.Space))
-            powerMultiplier += Time.deltaTime * powerMultiplierIncresingSpeed;
-    }
-
-    IEnumerator GetPowerAndJump()
-    {
-        yield return new WaitForSeconds(shrinkingSpringAnim.length + expandingSpringAnim.length);
-        GetForceToJump();
-    }
-
-    void GetForceToJump()
-    {
-        myRigidbody.AddForce(transform.up * powerMultiplier);
-        print("powermuliplier = " + powerMultiplier);
-    }
-
 }
